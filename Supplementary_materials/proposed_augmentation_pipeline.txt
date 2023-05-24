@@ -1,0 +1,135 @@
+#color augmentations
+colour_augments = dict(type='OneOf',
+            transforms=[
+              dict(type='HueSaturationValue',
+                hue_shift_limit=30,#was 20,
+                sat_shift_limit=10,# was30,
+                val_shift_limit=50,
+                p=0.2),
+
+              dict(type='RandomGamma',
+                gamma_limit = (50,100),
+                p=1.0),
+
+              dict(type='ColorJitter',
+                  brightness=0.9,
+                  contrast=0.3,
+                  saturation=0.5,
+                  hue=0.3,
+                  p=0.3),
+
+              dict(type='Equalize',
+                   mode='cv', by_channels=True,
+                    p=1.0)
+
+            ],p=0.4)
+
+#choose betweeen spatial transforms
+spatial_transforms=dict(type='OneOf',
+              transforms=[
+                dict(type='OpticalDistortion',
+                  distort_limit=[-0.35,0.2],
+                  shift_limit=[0,0.3],
+                  p=1.0),
+
+              dict(type='GridDistortion',
+                distort_limit=[-0.1,0.3],
+                steps=8,
+                p=1.0),
+
+              dict(type='ElasticTransform',
+                alpha= 750, #0-1000 or 500-1000 common #was 1000
+                sigma= 22, #4-10 common
+                alpha_affine= 35, #0 - 50 common
+                interpolation=1,
+                border_mode=2,
+                value=255, mask_value=0,
+                approximate=False, same_dxdy=False, p=3),
+
+            ],p=0.4)
+
+
+#choose between clarity transforms
+clarity_transforms=dict(type='OneOf',
+            transforms=[
+              dict(type='GaussianBlur',
+                blur_limit=6,
+                sigma_limit=5,
+                p=0.3),
+
+              #sharpen
+              dict(type='Sharpen',
+                    alpha=0.7,
+                     lightness=5,
+                      p=1.0),
+
+              #emboss
+              dict(type='Emboss',
+                    alpha=0.7,
+                    emboss_strength=1.2,
+                    p=1.0)
+
+            ],p=0.3)
+
+
+scale_down = dict(type='Sequential',
+                  transforms=[
+                    dict(type='RandomScale',
+                      scale_limit=(-0.3, 0),p=1.0),
+                    dict(type='PadIfNeeded',
+                        min_height=512,
+                        min_width=512,
+                        p=1.0)],
+                  p=1.0)
+
+scale_up = dict(type='Sequential',
+                  transforms=[
+                    dict(type='RandomScale',
+                          scale_limit=(0, 0.3),p=1.0),
+                    dict(type='RandomCrop',
+                        height=512,
+                        width=512,
+                        p=1.0)
+                          ],p=1.0)
+
+
+choose_scale_up_or_down = dict(type='OneOf',
+                            transforms=[scale_up,
+                              scale_down]
+                            ,p=0.3)
+
+
+
+
+combined_transforms = dict(type='Sequential',
+                        transforms=[colour_augments,
+                                    spatial_transforms,
+                                    clarity_transforms],
+                                    # choose_scale_up_or_down],
+
+                          p=0.5)
+
+final_resize = dict(type='Resize',
+                  height=FINAL_IMG_SIZE[0],
+                  width=FINAL_IMG_SIZE[1],
+                  p=1.0),
+
+rand_rotate=dict(type='RandomRotate90',p=0.5)
+
+grid_drop = dict(type='GridDropout',
+                  ratio=0.5,
+                  unit_size_min=2,
+                  unit_size_max=10,
+                  holes_number_x=32, holes_number_y=32,
+                  shift_x=0, shift_y=0, random_offset=True, fill_value=0, mask_fill_value=None,
+                  always_apply=False, p=0.2)
+
+final = [dict(type='Sequential',
+          transforms=[
+              combined_transforms,
+              final_resize,
+              rand_rotate,
+              # grid_drop
+          ],p=1.0)]
+
+

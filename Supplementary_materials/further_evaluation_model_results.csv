@@ -1,0 +1,24 @@
+Model name,Model backbone (Encoder),Decoder head,Auxillary head,DS (500 its),DS 1000 (its),DS 1500 (its),DS (2000 its),Mean DS,Validation Dice Score (tumor) (aiming for > 0.851),Accuracy_2000,IoU_2000
+PoolFormer_FPN_M48,PoolFormer,FPN,,59.35,67.37,70.15,70.27,66.785,,87.68,54.17
+PoolFormer_FPN_S36,PoolFormer,FPN,,64.78,68.59,70.02,69.92,68.33,,89.99,53.75
+SegFormer_B5,SegFormer,SegFormer,,38.41,65.81,69.2,68.84,60.565,,90.69,52.49
+mask2former_r51_8xb2-160k_ade20k-512x512.py,,,,,,,,,,,
+mask2former_swin-s_8xb2-160k_ade20k-512x512.py,,,,,,,,,,,53.47
+,,,,,,,69.67666667,,,,
+,,,,,,,,,,,
+Model name,Model backbone (Encoder),Decoder head,Auxillary head,DS (500 its),DS 1000 (its),DS 1500 (its),DS (2000 its),Mean DS,Validation Dice Score (tumor) (aiming for > 0.851),Accuracy,IoU
+PoolFormer_FPN_M48,PoolFormer,FPN,,59.35,67.37,70.15,70.27,66.785,,87.68,54.17
+PoolFormer_FPN_S36,PoolFormer,FPN,,64.78,68.59,70.02,69.92,68.3275,,89.99,53.75
+SegFormer_B5,SegFormer,SegFormer,,38.41,65.81,69.2,68.84,60.565,,90.69,52.49
+,,,,,,,,,,,
+,,,,,,,,,,,
+PoolFormer_FPN_M48,PoolFormer,FPN,,,,,,,,,
+,,,,56.33,69.05,68.93,69.29,65.9,,91.29,53.02
+,,,,51.6,61.77,68.74,69.46,62.8925,,87.88,53.21
+,,,,,,,,,,,
+,DS2000,IoU2000,,Accuracy2000,,,,,,,
+no augmentation,70.27,54.17,,87.68,,,,,,,
+augmentation_1,69.29,53.02,,91.29,,,,,,,
+augmentation_2,69.46,53.21,,87.88,,,,,,,
+augmentation_3,70.01,53.97,,87.54,,,,,,,
+augmentation_mean,69.59,53.40,,88.90,1.22,,,,,,
